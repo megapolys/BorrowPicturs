@@ -19,7 +19,7 @@ public class CopyWriter {
                     "\\LocalState" +
                     "\\Assets";
 
-    private String homePath = "C:\\Tests\\images";
+    private String homePath = "C:\\Users\\dlosev.NBKI\\Pictures\\desktop_images";
     /**
      * @param args 0 -  [help] - помощь
      *                  [-c] - с одним аргументом
@@ -70,6 +70,7 @@ public class CopyWriter {
     }
 
     public void mode1() {
+        System.out.println(new File(homePath).exists());
         copy();
         renameImagesInHomePath();
     }
@@ -129,7 +130,7 @@ public class CopyWriter {
             fin.read(bytes);
             fin.close();
             for (int i = 1000; i < bytes.length - 1000; i++) {
-                res += (bytes[i] * (31 + bytes[i - 1]));
+                res += bytes[i] + 31 * res;
             }
         } catch (IOException e) {
             e.printStackTrace();
