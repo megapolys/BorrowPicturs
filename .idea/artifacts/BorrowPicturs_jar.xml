@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="BorrowPicturs:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/BorrowPicturs_jar</output-path>
+    <root id="archive" name="BorrowPicturs.jar">
+      <element id="module-output" name="BorrowPicturs" />
+    </root>
+  </artifact>
+</component>
