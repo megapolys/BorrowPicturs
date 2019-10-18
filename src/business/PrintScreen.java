@@ -1,22 +1,27 @@
+package business;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Calendar;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class PrintScreen {
 
     private BufferedImage image;
     private String savePath;
+    private String dirName;
 
     public static void main(String[] args) throws Exception {
-        final String savePath = "C:\\Tests\\images";
+        final String savePath = System.getProperty("user.home") + "\\AppData\\Roaming\\PrintScreen";
+        new File(savePath).mkdir();
         System.out.println("Start program with outPath = " + savePath);
         final PrintScreen printScreen = new PrintScreen(savePath);
-        Timer timer = new Timer(true);
+        Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -27,13 +32,28 @@ public class PrintScreen {
                 }
             }
         }, 0, 1000);
-        Thread.sleep(5_000);
-        timer.cancel();
-        System.out.println("Exit program");
     }
 
     public PrintScreen(String savePath) {
         this.savePath = savePath;
+        this.dirName = String.format("%tF", Calendar.getInstance());
+        init();
+    }
+
+    private void init() {
+        new File(savePath + "/" + dirName).mkdir();
+        final Calendar calendar = Calendar.getInstance();
+        final List<String> listAvailableDirs = IntStream.range(0, 7).mapToObj(i ->  {
+            final String dateStr = String.format("%tF", calendar);
+            calendar.add(Calendar.DAY_OF_MONTH, -1);
+            return dateStr;
+        }).collect(Collectors.toList());
+        final File root = new File(savePath);
+        Arrays.stream(root.listFiles()).forEach(file -> {
+            if (!listAvailableDirs.contains(file.getName())) {
+                file.delete();
+            }
+        });
     }
 
     public void process() throws AWTException, IOException {
@@ -65,7 +85,7 @@ public class PrintScreen {
     }
 
     private File createNewImageFile(BufferedImage image) throws IOException {
-        final File file = new File(String.format("%s/%tH_%<tM_%<tS.jpg", savePath, Calendar.getInstance()));
+        final File file = new File(String.format("%s/%s/%tH_%<tM_%<tS.jpg", savePath, dirName, Calendar.getInstance()));
         file.createNewFile();
         return file;
     }

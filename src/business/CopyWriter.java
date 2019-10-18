@@ -1,4 +1,4 @@
-
+package business;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -10,8 +10,7 @@ import java.util.Objects;
 public class CopyWriter {
 
 
-    private String picturesPath =
-            System.getProperty("user.home") +
+    private String picturesPath = System.getProperty("user.home") +
                     "\\AppData" +
                     "\\Local" +
                     "\\Packages" +
